@@ -1,0 +1,2 @@
+export username=your_email_here
+export password=your_password_here
