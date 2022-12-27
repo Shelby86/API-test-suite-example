@@ -1,0 +1,27 @@
+import pytest
+from pytest import fixture
+import pyodbc
+from Helpers.auth import Auth
+
+
+@pytest.fixture
+def db():
+    server = 'geminishaledev01.database.windows.net' 
+    database = 'GeminiShale' 
+    username = 'Automation' 
+    password = '0lIvquRHSRe2cvYkNiFG' 
+    # ENCRYPT defaults to yes starting in ODBC Driver 18. It's good to always specify ENCRYPT=yes on the client side to avoid MITM attacks.
+    cnxn = pyodbc.connect('DRIVER={ODBC Driver 18 for SQL Server};SERVER='+server+';DATABASE='+database+';ENCRYPT=yes;UID='+username+';PWD='+ password)
+    return cnxn
+    cursor = cnxn.cursor()
+
+    return cnxn
+
+@pytest.fixture
+def default_headers():
+    header = {
+        "Accept": '*/*',
+        "Content-Type": 'application/json',
+        "Cookie": Auth.get_auth_cookie()
+    }
+    

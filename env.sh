@@ -1,2 +1,2 @@
-export username=your_email_here
+export username=user
 export password=your_password_here
