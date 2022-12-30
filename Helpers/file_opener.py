@@ -9,3 +9,9 @@ class FileOpener():
             f = read_file.read()
 
         return f
+
+    def open_json_file(file_name):
+        f = open(file_name)
+        data = json.load(f)
+
+        return data
