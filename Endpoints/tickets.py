@@ -2,54 +2,46 @@ import requests
 from requests import Session
 sess = Session()
 import json
+from Helpers.auth import Auth
 
 class Tickets():
+    def create_ticket(default_headers,base_url,file):
+        url = base_url
+        headers = default_headers
+        req = sess.post(url=f'{url}/ticket',
+        headers=headers,
+        data=file)
 
-    @staticmethod
-    def create_ticket(default_headers,base_url):
-        request = sess.post(url=f'{base_url}/ticket',
-                            headers=default_headers,
-                            data=json.dumps({
-
-    "TicketTypeId": 2,
-    "OperatorId": 1,
-    "VehicleId": 3,
-    "TrailerId": 1,
-    "ManifestNumber": "1234",
-    "OffloadTicketId": None,
-    "WorkOrderId": None,
-    "LoadTypeId": 6,
-    "SourceTank": None,
-    "SourceTankId": None,
-    "SourceOutletId": 2,
-    "SourceWellPadId": None,
-    "SourceVolume": 55,
-    "DestinationTank": None,
-    "DestinationTankId": None,
-    "DestinationOutletId": 33,
-    "DestinationWellPadId": None,
-    "DestinationVolume": 55,
-    "TotalNetVolume": None,
-    "CorrectedVolume": None,
-    "ObservedGravity": None,
-    "BasicSedimentAndWater": None,
-    "CorrectedGravity": None,
-    "ObservedTemperature": None,
-    "StartDate": "2022/12/19 15:33:43-05:00",
-    "EndDate": "2022/12/20 15:33:43-05:00",
-    "Flags": [],
-    "Tolls": [],
-    "Rerouted": False,
-    "TicketStatusId": 3,
-    "IntendedDestinationOutletId": None,
-    "IntendedDestinationWellPadId": None,
-    "IntendedDestinationTankId": None
-}))
-
-        resp = request.headers
+        resp = req.headers
         rh = dict(resp)
 
         loc = rh['Location']
         ticket_id = loc[-6:]
 
         return ticket_id
+
+    def delete_ticket(default_headers,base_url,ticket_id):
+        url = base_url
+        headers = default_headers
+        req = sess.delete(url=f'{url}/ticket/{ticket_id}',
+        headers=headers)
+
+        status_code = req.status_code
+        data = req.json()
+
+        res = {
+            "status_code": status_code,
+            "data": data
+        }
+
+        return res
+
+
+
+
+
+        
+
+
+
+        
