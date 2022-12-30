@@ -49,6 +49,20 @@ class Tickets():
 
         return ticket_id
 
+    def delete_npt_ticket(base_url,default_headers,ticket_id):
+        req = sess.delete(url=f'{base_url}/nonproductivetimeticket/{ticket_id}',
+                          headers=default_headers)
+
+        status_code = req.status_code
+        data = req.json()
+
+        res = {
+            "status_code": status_code,
+            "data": data
+        }
+
+        return res
+
 
 
 

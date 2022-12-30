@@ -44,7 +44,6 @@ class TestTickets():
 
     @pytest.mark.create_npt_ticket
     def test_create_npt_ticket(self,default_headers,base_url,db):
-        v = "f"
         # create a regular ticket
         data = FO.open_json_file(file_name='Data/ticket.json')
         ticket = Tickets.create_ticket(default_headers=default_headers, base_url=base_url, file=data)
@@ -65,6 +64,37 @@ class TestTickets():
         sql_npt = DB.query_runner_as_dict(db,query=sql)
 
         assert sql_npt['results'][0]['Id']
+
+    @pytest.mark.delete_npt_ticket
+    def test_delete_npt_ticket(self,base_url,default_headers,db):
+        # create a regular ticket
+        data = FO.open_json_file(file_name='Data/ticket.json')
+        ticket = Tickets.create_ticket(default_headers=default_headers, base_url=base_url, file=data)
+
+        # add the ticket number to the npt
+        file = FO.open_json_file(file_name='Data/npt_ticket.json')
+        file['TicketId'] = ticket
+
+        # create npt ticket
+        npt_ticket = Tickets.create_npt_ticket(base_url=base_url, default_headers=default_headers,
+                                               file=file)
+
+        # Delete Npt Ticket
+        deleted_ticket = Tickets.delete_npt_ticket(base_url=base_url,default_headers=default_headers,
+                                                   ticket_id=npt_ticket)
+
+        assert deleted_ticket['status_code'] == 200, f'Ticket was not deleted.' \
+                                                     f'\nStatus code: {deleted_ticket["status_code"]}'
+
+        # Assert status is disabled in the DB
+        sql = f"""SELECT Id,Enabled
+                  FROM dbo.NonProductiveTimeTicket
+                  WHERE Id = {npt_ticket}"""
+
+        sql_ticket = DB.query_runner_as_dict(db,query=sql)
+
+        assert sql_ticket['results'][0]['Enabled'] == False, "Ticket was not deleted in the DB"
+
 
 
 
