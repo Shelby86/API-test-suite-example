@@ -1,5 +1,4 @@
 import json
-
 import pytest
 from Endpoints.tickets import Tickets
 from Helpers.file_opener import FileOpener as FO
