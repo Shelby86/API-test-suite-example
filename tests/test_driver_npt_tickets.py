@@ -60,3 +60,4 @@ class TestDriverNptTickets:
         assert sql_npt['results'][0]['Id']
         assert sql_npt['results'][0]['Billable'] == False
         assert sql_npt['results'][0]['TicketTypeId'] == self.ticket_types['driver_npt']
+
