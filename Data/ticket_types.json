@@ -1,0 +1,11 @@
+{
+  "driver_ticket": 1,
+  "manual_ticket": 2,
+  "driver_npt": 3,
+  "manual_npt": 2,
+  "labor": 5,
+  "driver_alt": 6,
+  "driver_milk_run": 7,
+  "driver_reverse_milk_run": 8
+
+}

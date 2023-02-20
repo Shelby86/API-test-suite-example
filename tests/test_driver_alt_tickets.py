@@ -2,11 +2,13 @@ import pytest
 from Helpers.db_helper import DBHelper as DB
 from Helpers.file_opener import FileOpener as FO
 from Endpoints.tickets import Tickets
+import json
 
-
+@pytest.mark.driver_alt
 class TestDriverAltTickets:
 
-    load_types = FO.open_json_file(file_name='Data/load_types.json')
+    load_types = FO.open_json_file('load_types.json')
+
 
     @pytest.mark.driver_alt
     def test_driver_alt(self,base_url,default_headers,db):

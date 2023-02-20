@@ -5,6 +5,7 @@ from Helpers.file_opener import FileOpener as FO
 from Helpers.db_helper import DBHelper as DB
 
 
+@pytest.mark.tickets
 class TestTickets():
 
     @pytest.mark.create_basic_ticket

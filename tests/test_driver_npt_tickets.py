@@ -3,6 +3,7 @@ from Helpers.db_helper import DBHelper as DB
 from Helpers.file_opener import FileOpener as FO
 from Endpoints.tickets import Tickets
 
+@pytest.mark.driver_npt
 class TestDriverNptTickets:
 
     load_types = FO.open_json_file(file_name='Data/load_types.json')

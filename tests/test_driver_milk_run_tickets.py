@@ -2,6 +2,7 @@ import pytest
 from Helpers.db_helper import DBHelper as DB
 from Helpers.file_opener import FileOpener as FO
 from Endpoints.tickets import Tickets
+import Data
 
 
 @pytest.mark.driver_milk_run_tickets
@@ -10,7 +11,8 @@ class TestDriverMilkRunTickets:
     ticket_types = FO.open_json_file(file_name='Data/ticket_types.json')
     # Keep destination the same
     # Change the source
-    load_type = FO.open_json_file(file_name='Data/load_types.json')
+
+  
 
     @pytest.mark.test_milk_run_simple
     def test_milk_run_simple(self,base_url,default_headers,db):

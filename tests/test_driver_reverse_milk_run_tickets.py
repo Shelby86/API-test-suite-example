@@ -4,7 +4,7 @@ from Helpers.file_opener import FileOpener as FO
 from Endpoints.tickets import Tickets
 
 
-
+@pytest.mark.driver_reverse_milk_run
 class TestDriverReverseMilkRun:
 
     # Keep the source the same
