@@ -18,6 +18,7 @@ class Auth():
         resp = req.headers
         rh = dict(resp)
         auth_cookie = rh['Set-Cookie']
+        auth_cookie = auth_cookie[0:20] + auth_cookie[100:]
 
         return auth_cookie
 
