@@ -1,0 +1,15 @@
+{
+  "TicketId": 1568663,
+  "TicketTypeId": 3,
+  "DivisionId": 1,
+  "OperatorId": 3,
+  "HaulerId": 25,
+  "DriverId": 3967,
+  "VehicleId": 3,
+  "WellPadId": null,
+  "Billable": 1,
+  "TicketStatusId": 3,
+  "NonProductiveTimeTypeId": 24,
+  "StartDate": "2022-12-15 12:47:39.0000000 -05:00",
+  "EndDate": "2022-12-18 12:47:39.0000000 -05:00"
+}

@@ -12,7 +12,6 @@ class TestDriverMilkRunTickets:
     # Keep destination the same
     # Change the source
 
-  
 
     @pytest.mark.test_milk_run_simple
     def test_milk_run_simple(self,base_url,default_headers,db):

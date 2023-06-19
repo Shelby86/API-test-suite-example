@@ -30,6 +30,7 @@ class TestDriverAltTickets:
         ticket_file['TicketTypeId'] = 6
         ticket_file['LoadTypeId'] = self.load_types['prod_prod']
 
+
         ticket_id = Tickets.create_ticket(default_headers,base_url,file=ticket_file)
 
         # Assert ticket in the DB

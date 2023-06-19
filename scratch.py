@@ -1,8 +1,17 @@
-import pytest
-from Endpoints.tickets import Tickets
-from Helpers.file_opener import FileOpener as FO
-import pyodbc
+import random
 
 
-file = FO.open_file(file_name='tests/Data/ticket.json')
-print(file)
+server = 'geminishaledev01.database.windows.net'
+database = 'GeminiShale'
+username = 'QA Automation'
+password = '3K8V999CreIYZoY'
+
+x = ('DRIVER={ODBC Driver 18 for SQL Server};SERVER=' + server + ';DATABASE=' + database + ';ENCRYPT=yes;UID=' + username + ';PWD=' + password)
+
+print(x)
+
+
+
+
+
+
