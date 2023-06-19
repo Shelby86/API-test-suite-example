@@ -6,11 +6,14 @@ import json
 from Helpers.auth import Auth
 import logging as log
 from Endpoints.toll import Toll
+from Endpoints.assign_cost import AssignCost
 
 hauler_imp = FO.open_json_file(file_name='Data/impersonate_hauler')
 ticket_file = FO.open_json_file(file_name='Data/range.json')
 npt_file = FO.open_json_file(file_name="Data/principle_range_npt.json")
 toll = FO.open_json_file(file_name="Data/toll.json")
+operator_imp = FO.open_json_file(file_name='Data/impersonate_operator.json')
+cost_file = FO.open_json_file(file_name="Data/cost_assignment.json")
 
 class TestRangePrinciple:
 
@@ -115,6 +118,138 @@ class TestRangePrinciple:
 
         sql = DB.query_runner_as_dict(db, query=query)
         assert sql['results'][0]['TicketStatusId'] == 5
+
+
+    @pytest.mark.approve_ticket_as_operator
+    def test_approve_ticket_as_operator(self,base_url,default_headers,db):
+        # impersonate hauler
+        impersonate = Auth.impoersonate(base_url, default_headers, file=hauler_imp)
+        # create ticket as hauler
+        ticket = Tickets.create_ticket(base_url, cookie=impersonate, file=ticket_file)
+        # approve ticket as hauler
+        id = ticket['data']
+        approved = Tickets.approve_ticket(base_url, cookie=impersonate, id=id)
+        assert approved['status_code'] == 200
+        # impersonate operator
+        imp_operator = Auth.impoersonate(base_url,default_headers,file=operator_imp)
+        # approve ticket as operator
+        approved = Tickets.approve_ticket(base_url, cookie=imp_operator, id=id)
+        assert approved['status_code'] == 200
+
+        # DB Verification
+        query = f"""
+                SELECT Id, TicketStatusId
+                FROM dbo.Ticket
+                WHERE Id = {id}"""
+        sql = DB.query_runner_as_dict(db, query=query)
+
+        assert sql['results'][0]['TicketStatusId'] == 8
+
+    @pytest.mark.approve_npt_ticket_as_an_operator
+    def test_approve_ticket_with_npt_as_oprtator(self,base_url,default_headers,db):
+        impersonate = Auth.impoersonate(base_url, default_headers, file=hauler_imp)
+        # create ticket as hauler
+        ticket = Tickets.create_ticket(base_url, cookie=impersonate, file=ticket_file)
+        id = ticket['data']
+        # Create NPT ticket
+        npt_file['TicketId'] = ticket['data']
+        npt_ticket = Tickets.create_npt_ticket(base_url, file=npt_file, cookie=impersonate)
+        npt_id = npt_ticket['data']
+        # Approve Ticket as a Hauler
+        approved = Tickets.approve_ticket(base_url, cookie=impersonate, id=id)
+        assert approved['status_code'] == 200
+        # Impersonate Operator
+        imp_operator = Auth.impoersonate(base_url, default_headers, file=operator_imp)
+        # Approve Ticket as an Operator
+        approved = Tickets.approve_ticket(base_url, cookie=imp_operator, id=id)
+        assert approved['status_code'] == 200
+
+        # DB Verifications
+        query = f"""
+                SELECT Id, TicketStatusId, TicketId
+                FROM dbo.NonProductiveTimeTicket
+                WHERE Id = {npt_id}"""
+
+        sql = DB.query_runner_as_dict(db, query=query)
+
+        assert sql['results'][0]['TicketStatusId'] == 8
+        assert sql['results'][0]['TicketId'] == id
+
+    @pytest.mark.assign_cost
+    def test_assign_cost(self,base_url,default_headers,db):
+        impersonate = Auth.impoersonate(base_url, default_headers, file=hauler_imp)
+        # create ticket as hauler
+        ticket = Tickets.create_ticket(base_url, cookie=impersonate, file=ticket_file)
+        id = ticket['data']
+        # Approve Ticket as a Hauler
+        approved = Tickets.approve_ticket(base_url, cookie=impersonate, id=id)
+        assert approved['status_code'] == 200
+        # Impersonate Operator
+        imp_operator = Auth.impoersonate(base_url, default_headers, file=operator_imp)
+        # Approve Ticket as an Operator
+        approved = Tickets.approve_ticket(base_url, cookie=imp_operator, id=id)
+        assert approved['status_code'] == 200
+        # Assign Cost as Operator
+        cost_file['TicketIds'][0] = id
+        cost = AssignCost.assign_cost(base_url,cookie=imp_operator,file=cost_file)
+        assert cost == 200
+
+        # DB Verifications
+        # status 11
+        query = f"""
+                SELECT Id, TicketStatusId
+                FROM dbo.ticket
+                WHERE Id = {id}"""
+        sql = DB.query_runner_as_dict(db, query=query)
+        assert sql['results'][0]['TicketStatusId'] == 11
+
+    @pytest.mark.assign_cost_with_npt
+    def test_assign_cost_with_npt_ticket(self,base_url,default_headers,db):
+        impersonate = Auth.impoersonate(base_url, default_headers, file=hauler_imp)
+        # create ticket as hauler
+        ticket = Tickets.create_ticket(base_url, cookie=impersonate, file=ticket_file)
+        id = ticket['data']
+        # Create NPT ticket
+        npt_file['TicketId'] = ticket['data']
+        npt_ticket = Tickets.create_npt_ticket(base_url, file=npt_file, cookie=impersonate)
+        npt_id = npt_ticket['data']
+        # Approve Ticket as a Hauler
+        approved = Tickets.approve_ticket(base_url, cookie=impersonate, id=id)
+        assert approved['status_code'] == 200
+        # Impersonate Operator
+        imp_operator = Auth.impoersonate(base_url, default_headers, file=operator_imp)
+        # Approve Ticket as an Operator
+        approved = Tickets.approve_ticket(base_url, cookie=imp_operator, id=id)
+        assert approved['status_code'] == 200
+        # Assign Cost
+        cost_file['TicketIds'][0] = id
+        cost = AssignCost.assign_cost(base_url, cookie=imp_operator, file=cost_file)
+        assert cost == 200
+
+        # DB Verifications
+        # status 11
+        query = f"""
+                       SELECT Id, TicketStatusId
+                        FROM dbo.ticket
+                        WHERE Id = {id}"""
+        sql = DB.query_runner_as_dict(db, query=query)
+        assert sql['results'][0]['TicketStatusId'] == 11
+
+        query = f"""
+                        SELECT Id, TicketStatusId, TicketId
+                        FROM dbo.NonProductiveTimeTicket
+                        WHERE Id = {npt_id}"""
+
+        sql = DB.query_runner_as_dict(db, query=query)
+
+        assert sql['results'][0]['TicketStatusId'] == 11
+
+
+
+
+
+
+
 
 
 

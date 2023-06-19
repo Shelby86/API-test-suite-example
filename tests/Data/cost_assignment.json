@@ -1,0 +1,51 @@
+{
+  "TicketIds": [
+    0
+  ],
+  "WellHeadAllocations": [
+    {
+      "WellPadId": 995,
+      "WellHeadId": 4212,
+      "AccountCodeId": 1,
+      "AccountAreaId": 3,
+      "LoadTypeId": null,
+      "CostCenter": null,
+      "AFENumber": "0910130332",
+      "AllocationMethod": 1,
+      "AllocationPercent": 0.25
+    },
+    {
+      "WellPadId": 995,
+      "WellHeadId": 4213,
+      "AccountCodeId": 1,
+      "AccountAreaId": 3,
+      "LoadTypeId": null,
+      "CostCenter": null,
+      "AFENumber": "0910130112",
+      "AllocationMethod": 1,
+      "AllocationPercent": 0.25
+    },
+    {
+      "WellPadId": 995,
+      "WellHeadId": 4214,
+      "AccountCodeId": 1,
+      "AccountAreaId": 3,
+      "LoadTypeId": null,
+      "CostCenter": null,
+      "AFENumber": "0910130112",
+      "AllocationMethod": 1,
+      "AllocationPercent": 0.25
+    },
+    {
+      "WellPadId": 995,
+      "WellHeadId": 4215,
+      "AccountCodeId": 1,
+      "AccountAreaId": 3,
+      "LoadTypeId": null,
+      "CostCenter": null,
+      "AFENumber":"0910130110",
+      "AllocationMethod": 1,
+      "AllocationPercent": 0.25
+    }
+  ]
+}
