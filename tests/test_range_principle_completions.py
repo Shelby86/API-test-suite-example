@@ -18,7 +18,7 @@ operator_imp = FO.open_json_file(file_name='Data/impersonate_operator.json')
 cost_file = FO.open_json_file(file_name="Data/cost_assignment.json")
 approve_cost_file = FO.open_json_file(file_name='Data/cost_assignment_review.json')
 
-class TestRangePrinciple:
+class TestRangePrincipleComp:
 
 
     @pytest.mark.auth_test_comp
