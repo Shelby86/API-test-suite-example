@@ -85,11 +85,15 @@ class Tickets():
     #     return res
 
     def approve_ticket(base_url,cookie,id):
-        req = sess.post(url=f'{base_url}/Ticket/{id}/approve',
+        url = f"{base_url}/Ticket/{id}/approve"
+        print(url)
+        req = sess.post(url=url,
                         headers={"Cookie": cookie, "Accept": "*/*", "Content-Type": "application/json"})
 
+        print
+
         res = {
-            "data": req.json(),
+            # "data": req.json(),
             "status_code": req.status_code
         }
 

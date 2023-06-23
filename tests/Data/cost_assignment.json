@@ -11,8 +11,8 @@
       "LoadTypeId": null,
       "CostCenter": null,
       "AFENumber": "0910130332",
-      "AllocationMethod": 1,
-      "AllocationPercent": 0.25
+      "AllocationMethod": 2,
+      "AllocationPercent": 0.30
     },
     {
       "WellPadId": 995,
@@ -22,8 +22,8 @@
       "LoadTypeId": null,
       "CostCenter": null,
       "AFENumber": "0910130112",
-      "AllocationMethod": 1,
-      "AllocationPercent": 0.25
+      "AllocationMethod": 2,
+      "AllocationPercent": 0.20
     },
     {
       "WellPadId": 995,
@@ -33,8 +33,8 @@
       "LoadTypeId": null,
       "CostCenter": null,
       "AFENumber": "0910130112",
-      "AllocationMethod": 1,
-      "AllocationPercent": 0.25
+      "AllocationMethod": 2,
+      "AllocationPercent": 0.30
     },
     {
       "WellPadId": 995,
@@ -44,8 +44,8 @@
       "LoadTypeId": null,
       "CostCenter": null,
       "AFENumber":"0910130110",
-      "AllocationMethod": 1,
-      "AllocationPercent": 0.25
+      "AllocationMethod": 2,
+      "AllocationPercent": 0.20
     }
   ]
 }
