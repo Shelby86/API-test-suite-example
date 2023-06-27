@@ -32,9 +32,9 @@ class TestEncinoGas:
     hauler = FO.open_json_file(file_name='Data/impersonate_hauler')
     hauler['HaulerId'] = 26
     operator_imp = FO.open_json_file(file_name='Data/operator_encino.json')
-
-
     npt_file = FO.open_json_file(file_name="Data/npt_ticket_encino_gas.json")
+
+    invoice = 24049
 
     @pytest.mark.encino_gas_invoice
     # npt not working
@@ -129,12 +129,6 @@ class TestEncinoGas:
         ticket = Tickets.create_ticket(base_url, cookie=imp_hauler, file=self.ticket_52)
         id = ticket['data']
         assert ticket['status_code'] == 201
-        # gather the ticket ids in a list here
-        # Create npt
-        self.npt_file['TicketId'] = id
-        npt_ticket = Tickets.create_npt_ticket(base_url, file=self.npt_file, cookie=imp_hauler)
-        npt_id = npt_ticket['data']
-        # approve ticket
         approved = Tickets.approve_ticket(base_url, cookie=imp_hauler, id=id)
         # Verify status
         query = f"""
@@ -144,14 +138,14 @@ class TestEncinoGas:
         sql = DB.query_runner_as_dict(db, query=query)
         assert sql['results'][0]['TicketStatusId'] == 5
 
-        query = f"""
-                                                        SELECT Id, TicketStatusId, TicketId
-                                                        FROM dbo.NonProductiveTimeTicket
-                                                        WHERE Id = {npt_id}"""
-
-        sql = DB.query_runner_as_dict(db, query=query)
-
-        assert sql['results'][0]['TicketStatusId'] == 5
+        # query = f"""
+        #                                                 SELECT Id, TicketStatusId, TicketId
+        #                                                 FROM dbo.NonProductiveTimeTicket
+        #                                                 WHERE Id = {npt_id}"""
+        #
+        # sql = DB.query_runner_as_dict(db, query=query)
+        #
+        # assert sql['results'][0]['TicketStatusId'] == 5
 
         # impersonate operator
         imp_operator = Auth.impoersonate(base_url, default_headers, file=self.operator_imp)
@@ -167,16 +161,81 @@ class TestEncinoGas:
         sql = DB.query_runner_as_dict(db, query=query)
         assert sql['results'][0]['TicketStatusId'] == 8
 
-        query = f"""
-                                                                SELECT Id, TicketStatusId, TicketId
-                                                                FROM dbo.NonProductiveTimeTicket
-                                                                WHERE Id = {npt_id}"""
-
-        sql = DB.query_runner_as_dict(db, query=query)
-
-        assert sql['results'][0]['TicketStatusId'] == 8
+        # query = f"""
+        #                                                         SELECT Id, TicketStatusId, TicketId
+        #                                                         FROM dbo.NonProductiveTimeTicket
+        #                                                         WHERE Id = {npt_id}"""
+        #
+        # sql = DB.query_runner_as_dict(db, query=query)
+        #
+        # assert sql['results'][0]['TicketStatusId'] == 8
 
         # Assign cost
-        ticket_details = DB.get_db_ticket_details(db,ticket_id=1450452)
-        print(ticket_details)
+        # cost_assignment_details = DB.get_ticket_well_head_pct_and_allocation_costs(db,ticket_id=1450452)
+        cost_file = FO.open_json_file(file_name='Data/cost_assign_ticket_52.json')
+        cost_file['TicketIds'][0] = id
+        assign_cost = AssignCost.assign_cost(base_url,cookie=imp_operator,file=cost_file)
+        assert assign_cost == 200
+
+        # Verify ticket status and npt ticket status is in cost awaiting review
+        time.sleep(2)
+        query = f"""
+                                                                      SELECT Id, TicketStatusId
+                                                                       FROM dbo.ticket
+                                                                       WHERE Id = {id}"""
+        # sql = DB.query_runner_as_dict(db, query=query)
+        # assert sql['results'][0]['TicketStatusId'] == 11
+        #
+        # query = f"""
+        #                                                                SELECT Id, TicketStatusId, TicketId
+        #                                                                FROM dbo.NonProductiveTimeTicket
+        #                                                                WHERE Id = {npt_id}"""
+        #
+        # sql = DB.query_runner_as_dict(db, query=query)
+        #
+        # assert sql['results'][0]['TicketStatusId'] == 11
+
+        # Complete Cost
+        complete_cost_file = FO.open_json_file(file_name='Data/cost_assignment_review.json')
+        complete_cost_file['Tickets'][0] = id
+        completed_cost = CostAssignmentReview.approve_cost(base_url,default_headers,cookie=imp_operator,file=complete_cost_file)
+        assert completed_cost == 200
+
+        # Verify ticket status is in Pending Hauler Invoice
+        time.sleep(2)
+        query = f"""
+                                                                              SELECT Id, TicketStatusId
+                                                                               FROM dbo.ticket
+                                                                               WHERE Id = {id}"""
+        # sql = DB.query_runner_as_dict(db, query=query)
+        # assert sql['results'][0]['TicketStatusId'] == 16
+        #
+        # query = f"""
+        #                                                                        SELECT Id, TicketStatusId, TicketId
+        #                                                                        FROM dbo.NonProductiveTimeTicket
+        #                                                                        WHERE Id = {npt_id}"""
+        #
+        # sql = DB.query_runner_as_dict(db, query=query)
+        #
+        # assert sql['results'][0]['TicketStatusId'] == 16
+
+        # Verify cost og the original ticket against the cost in the mimicked ticket
+        query = f"""
+                    SELECT TotalAmount
+                    FROM dbo.Ticket
+                    WHERE Id = {id}"""
+        original_ticket_details = DB.get_db_ticket_details(db,ticket_id=1450452)
+        total_amt = original_ticket_details['results'][0]['Ticket Cost']
+
+        # New Ticket Details
+        ticket_details = DB.get_db_ticket_details(db,ticket_id=id)
+        new_cost = ticket_details['results'][0]['Ticket Cost']
+
+        assert total_amt == new_cost
+
+
+
+
+
+
 

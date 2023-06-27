@@ -102,9 +102,24 @@ class DBHelper:
         return npt_total
 
     def get_ticket_well_head_pct_and_allocation_costs(db,ticket_id):
-        query = f"""SELECT AFENumber, AllocationPercent, RoundedPercent, BarrelAllocatedValue
-        from TicketCostAllocation
-        WHERE TicketId = {ticket_id};"""
+        query = f"""SELECT [Id]
+      ,[TicketId]
+      ,[WellPadId]
+      ,[WellHeadId]
+      ,[CostCenter]
+      ,[AFENumber]
+      ,[AccountCodeId]
+      ,[AccountAreaId]
+      ,[LoadTypeId]
+      ,[AllocationPercent]
+      ,[AllocationMethod]
+      ,[RoundedPercent]
+      ,[BarrelAllocatedValue]
+      ,[DurationAllocatedValue]
+      ,[CostAllocatedValue]
+      ,[TollAllocatedValue]
+      FROM [dbo].[TicketCostAllocation]
+      WHERE TicketId = {ticket_id};"""
 
         sql = DBHelper.query_runner_as_dict(db, query=query)
 
