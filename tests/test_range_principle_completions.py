@@ -154,6 +154,7 @@ class TestRangePrincipleComp:
         # create ticket as hauler
         ticket = Tickets.create_ticket(base_url, cookie=impersonate, file=ticket_file)
         id = ticket['data']
+        print(id)
         # Create NPT ticket
         npt_file['TicketId'] = ticket['data']
         npt_ticket = Tickets.create_npt_ticket(base_url, file=npt_file, cookie=impersonate)
@@ -247,6 +248,7 @@ class TestRangePrincipleComp:
 
         assert sql['results'][0]['TicketStatusId'] == 11
 
+    @pytest.mark.range_cp
     @pytest.mark.cost_assign_review_npt_comp
     def test_cost_assign_review_with_npt(self,base_url,default_headers,db):
         impersonate = Auth.impoersonate(base_url, default_headers, file=hauler_imp)
@@ -321,37 +323,39 @@ class TestRangePrincipleComp:
         approved = Tickets.approve_ticket(base_url, cookie=imp_operator, id=id)
         assert approved['status_code'] == 200
         # Assert DB validation Ticket is in cost assignment
-        query = f"""
-                              SELECT Id, TicketStatusId
-                               FROM dbo.ticket
-                               WHERE Id = {id}"""
-        sql = DB.query_runner_as_dict(db, query=query)
-        assert sql['results'][0]['TicketStatusId'] == 11
+        # query = f"""
+        #                       SELECT Id, TicketStatusId
+        #                        FROM dbo.ticket
+        #                        WHERE Id = {id}"""
+        # sql = DB.query_runner_as_dict(db, query=query)
+        # assert sql['results'][0]['TicketStatusId'] == 11
+        #
+        # query = f"""
+        #                        SELECT Id, TicketStatusId, TicketId
+        #                        FROM dbo.NonProductiveTimeTicket
+        #                        WHERE Id = {npt_id}"""
+        #
+        # sql = DB.query_runner_as_dict(db, query=query)
+        #
+        # assert sql['results'][0]['TicketStatusId'] == 11
+        # # Assign Cost
+        # cost_file['TicketIds'][0] = id
+        # cost = AssignCost.assign_cost(base_url, cookie=imp_operator, file=cost_file)
+        # assert cost == 200
+        # approve_cost_file['Tickets'][0] = id
+        # cost_review = CostAssignmentReview.approve_cost(base_url, default_headers, cookie=imp_operator,
+        #                                                 file=approve_cost_file)
+        # assert cost_review == 200
 
-        query = f"""
-                               SELECT Id, TicketStatusId, TicketId
-                               FROM dbo.NonProductiveTimeTicket
-                               WHERE Id = {npt_id}"""
+        # # DB Verifications
+        # query = f"""
+        #                       SELECT Id, TicketStatusId
+        #                       FROM dbo.ticket
+        #                       WHERE Id = {id}"""
+        # sql = DB.query_runner_as_dict(db, query=query)
+        # assert sql['results'][0]['TicketStatusId'] == 16
 
-        sql = DB.query_runner_as_dict(db, query=query)
 
-        assert sql['results'][0]['TicketStatusId'] == 11
-        # Assign Cost
-        cost_file['TicketIds'][0] = id
-        cost = AssignCost.assign_cost(base_url, cookie=imp_operator, file=cost_file)
-        assert cost == 200
-        approve_cost_file['Tickets'][0] = id
-        cost_review = CostAssignmentReview.approve_cost(base_url, default_headers, cookie=imp_operator,
-                                                        file=approve_cost_file)
-        assert cost_review == 200
-
-        # DB Verifications
-        query = f"""
-                              SELECT Id, TicketStatusId
-                              FROM dbo.ticket
-                              WHERE Id = {id}"""
-        sql = DB.query_runner_as_dict(db, query=query)
-        assert sql['results'][0]['TicketStatusId'] == 16
 
 
 

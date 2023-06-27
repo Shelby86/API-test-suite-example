@@ -401,6 +401,7 @@ class TestRangePrinciple:
         sql = DB.query_runner_as_dict(db, query=query)
         assert sql['results'][0]['TicketStatusId'] == 16
 
+    @pytest.mark.range_cp
     @pytest.mark.pend_hauler_inv_npt
     def test_pend_hauler_inv_npt(self, base_url, default_headers, db):
         impersonate = Auth.impoersonate(base_url, default_headers, file=hauler_imp)
@@ -481,24 +482,6 @@ class TestRangePrinciple:
         npt_calculated_total = DB.get_npt_ticket_total(db,bbls,npt_time,npt_id)
 
         assert float(npt_calculated_total) == float(npt_cost)
-
-        # Verify the Well head percent and total
-        # Json file Values
-        pct_0910130332 = 0.30
-        pct_0910130112_1 = 0.20
-        pct_0910130112_2 = 0.30
-        pct_0910130110 = 0.20
-
-        ticket_pcts = DB.get_ticket_well_head_pct(db,ticket_id=id)
-        print(ticket_pcts)
-
-        # assert float(pct_0910130332) == ticket_pcts['db_pct_0910130332']
-        # assert float(pct_0910130112_1) == ticket_pcts['db_pct_0910130112_1']
-        # assert float(pct_0910130112_2) == ticket_pcts['db_pct_0910130112_2']
-        # assert float(pct_0910130110) == ticket_pcts['db_pct_0910130110']
-
-        # Verify the npt ticket pcts
-        npt_pcts = DB.get_npt_pcts_prod(db,npt_id)
 
 
 
