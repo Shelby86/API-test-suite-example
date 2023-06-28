@@ -76,17 +76,16 @@ class DBHelper:
                   'Please run the QUERY: \n'
                   'SELECT Id, NAME, Description FROM dbo.CostType')
 
-        total = round(total, 1)
-
         return total
 
-    def get_npt_ticket_total(db,bbls,npt_time,npt_id):
-        query = f"""SET NOCOUNT ON exec getnptrate 556743"""
+    def get_npt_ticket_total(db, bbls, npt_time, npt_id):
+        query = f"""SET NOCOUNT ON exec getnptrate {npt_id}"""
         sql = DBHelper.query_runner_as_dict(db, query=query)
 
         npt_rate = sql['results'][0]['Rate']
-        npt_cost_type = sql['results'][0]['']
-        print(npt_rate)
+        npt_rate = float(npt_rate)
+
+        npt_cost_type = sql['results'][0]['CostTypeId']
 
         if npt_cost_type == 1:
             npt_total = bbls * npt_rate
@@ -96,8 +95,6 @@ class DBHelper:
             print('That rate type has not been coded \n'
                   'Please run the QUERY: \n'
                   'SELECT Id, NAME, Description FROM dbo.CostType')
-
-        npt_total = round(npt_total, 1)
 
         return npt_total
 
@@ -125,24 +122,19 @@ class DBHelper:
 
         return sql
 
-        # db_pct_0910130332 = round(sql['results'][0]['AllocationPercent'], 2)
-        # db_pct_0910130112_1 = round(sql['results'][1]['AllocationPercent'], 2)
-        # db_pct_0910130112_2 = round(sql['results'][2]['AllocationPercent'], 2)
-        # db_pct_0910130110 = round(sql['results'][3]['AllocationPercent'], 2)
-        #
-        # data = {
-        #     "db_pct_0910130332": db_pct_0910130332,
-        #     "db_pct_0910130112_1": db_pct_0910130112_1,
-        #     "db_pct_0910130112_2": db_pct_0910130112_2,
-        #     "db_pct_0910130110": db_pct_0910130110
-        # }
-        #
-        # return data
-
     def get_npt_pcts_prod(db,npt_id):
         query = f"""SELECT AllocationPercent, RoundedPercent, DurationAllocatedValue, CostAllocatedValue
         from NonProductiveTimeTicketCostAllocation
         WHERE NonProductiveTimeTicketId = {npt_id}"""
+        sql = DBHelper.query_runner_as_dict(db, query=query)
+
+        return sql
+
+    def get_pcts(db,ticket_id):
+        query = f"""SELECT AFENumber, AllocationPercent, RoundedPercent, BarrelAllocatedValue
+        from TicketCostAllocation
+        WHERE TicketId = {ticket_id};"""
+
         sql = DBHelper.query_runner_as_dict(db, query=query)
 
         return sql

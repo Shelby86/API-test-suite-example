@@ -4,12 +4,12 @@
   "DivisionId": 1,
   "OperatorId": 6,
   "HaulerId": 26,
-  "DriverId": 3967,
-  "VehicleId": 2,
+  "DriverId": 254,
+  "VehicleId": 103,
   "WellPadId": null,
   "Billable": 1,
   "TicketStatusId": 3,
   "NonProductiveTimeTypeId": 24,
-     "StartDate": "2023-06-07 8:00:00.0000000 -05:00",
-    "EndDate": "2023-06-08 09:00:00.0000000 -05:00"
+     "StartDate": "2023-03-31 14:41:27.0000000 -04:00",
+    "EndDate": "2023-03-31 15:04:22.0000000 -04:00"
 }
