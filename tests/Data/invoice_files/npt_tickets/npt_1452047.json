@@ -1,0 +1,15 @@
+{
+  "TicketId": 1,
+  "TicketTypeId": 3,
+  "DivisionId": 1,
+  "OperatorId": 6,
+  "HaulerId": 26,
+  "DriverId": 8461,
+  "VehicleId": 109,
+  "WellPadId": 2419,
+  "Billable": 1,
+  "TicketStatusId": 3,
+  "NonProductiveTimeTypeId": 24,
+     "StartDate": "2023-03-31 03:57:09.0000000 -04:00",
+    "EndDate": "2023-03-31 05:50:24.0000000 -04:00"
+}
