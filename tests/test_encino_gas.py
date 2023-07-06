@@ -306,6 +306,27 @@ class TestEncinoGas:
         ticket_total = round(ticket_total,3)
         assert round(calculated_total,3) == ticket_total
 
+        file = self.invoice_file
+        file['SelectedTickets'] = [id]
+
+        # Invoice as hauler
+        imp_hauler = Auth.impoersonate(base_url, default_headers, file=self.hauler)
+        time.sleep(1)
+        invoiced = Invoice.invoice_tickets(base_url, file_name=file, cookie=imp_hauler)
+
+        assert invoiced == 200
+
+        # Verify Ticket Status is 19, Invoiced
+
+        query = f"""SELECT TicketStatusId, InvoiceId
+                FROM dbo.ticket
+                WHERE Id = {id}"""
+
+        sql = DB.query_runner_as_dict(db, query)
+
+        assert sql['results'][0]['TicketStatusId'] == 19
+        invoice_id = sql['results'][0]['InvoiceId']
+
 
 
 
@@ -499,6 +520,27 @@ class TestEncinoGas:
         total_amount = float(total_amount)
 
         assert calculated_npt_total == total_amount
+
+        file = self.invoice_file
+        file['SelectedTickets'] = [id]
+
+        # Invoice as hauler
+        imp_hauler = Auth.impoersonate(base_url, default_headers, file=self.hauler)
+        time.sleep(1)
+        invoiced = Invoice.invoice_tickets(base_url, file_name=file, cookie=imp_hauler)
+
+        assert invoiced == 200
+
+        # Verify Ticket Status is 19, Invoiced
+
+        query = f"""SELECT TicketStatusId, InvoiceId
+                FROM dbo.ticket
+                WHERE Id = {id}"""
+
+        sql = DB.query_runner_as_dict(db, query)
+
+        assert sql['results'][0]['TicketStatusId'] == 19
+        invoice_id = sql['results'][0]['InvoiceId']
 
     @pytest.mark.ticket_34
     def test_ticket_34(self,base_url,db,default_headers):
@@ -695,6 +737,27 @@ class TestEncinoGas:
 
         assert calculated_npt_total == total_amount
 
+        file = self.invoice_file
+        file['SelectedTickets'] = [id]
+
+        # Invoice as hauler
+        imp_hauler = Auth.impoersonate(base_url, default_headers, file=self.hauler)
+        time.sleep(1)
+        invoiced = Invoice.invoice_tickets(base_url, file_name=file, cookie=imp_hauler)
+
+        assert invoiced == 200
+
+        # Verify Ticket Status is 19, Invoiced
+
+        query = f"""SELECT TicketStatusId, InvoiceId
+                FROM dbo.ticket
+                WHERE Id = {id}"""
+
+        sql = DB.query_runner_as_dict(db, query)
+
+        assert sql['results'][0]['TicketStatusId'] == 19
+        invoice_id = sql['results'][0]['InvoiceId']
+
 
     @pytest.mark.ticket_53
     def test_ticket_53(self,db,base_url,default_headers):
@@ -867,6 +930,27 @@ class TestEncinoGas:
                                                               ticket_time=ticket_time)
         ticket_total = round(ticket_total, 3)
         assert round(calculated_total, 3) == ticket_total
+
+        file = self.invoice_file
+        file['SelectedTickets'] = [id]
+
+        # Invoice as hauler
+        imp_hauler = Auth.impoersonate(base_url, default_headers, file=self.hauler)
+        time.sleep(1)
+        invoiced = Invoice.invoice_tickets(base_url, file_name=file, cookie=imp_hauler)
+
+        assert invoiced == 200
+
+        # Verify Ticket Status is 19, Invoiced
+
+        query = f"""SELECT TicketStatusId, InvoiceId
+                FROM dbo.ticket
+                WHERE Id = {id}"""
+
+        sql = DB.query_runner_as_dict(db, query)
+
+        assert sql['results'][0]['TicketStatusId'] == 19
+        invoice_id = sql['results'][0]['InvoiceId']
 
 
     @pytest.mark.ticket_78
@@ -1045,6 +1129,27 @@ class TestEncinoGas:
         ticket_total = round(ticket_total, 3)
         assert round(calculated_total, 3) == ticket_total
 
+        file = self.invoice_file
+        file['SelectedTickets'] = [id]
+
+        # Invoice as hauler
+        imp_hauler = Auth.impoersonate(base_url, default_headers, file=self.hauler)
+        time.sleep(1)
+        invoiced = Invoice.invoice_tickets(base_url, file_name=file, cookie=imp_hauler)
+
+        assert invoiced == 200
+
+        # Verify Ticket Status is 19, Invoiced
+
+        query = f"""SELECT TicketStatusId, InvoiceId
+                FROM dbo.ticket
+                WHERE Id = {id}"""
+
+        sql = DB.query_runner_as_dict(db, query)
+
+        assert sql['results'][0]['TicketStatusId'] == 19
+        invoice_id = sql['results'][0]['InvoiceId']
+
 
     @pytest.mark.ticket_26
     def test_ticket_26(self,base_url,default_headers,db):
@@ -1221,6 +1326,27 @@ class TestEncinoGas:
         ticket_total = round(ticket_total, 3)
         assert round(calculated_total, 3) == ticket_total
 
+        file = self.invoice_file
+        file['SelectedTickets'] = [id]
+
+        # Invoice as hauler
+        imp_hauler = Auth.impoersonate(base_url, default_headers, file=self.hauler)
+        time.sleep(1)
+        invoiced = Invoice.invoice_tickets(base_url, file_name=file, cookie=imp_hauler)
+
+        assert invoiced == 200
+
+        # Verify Ticket Status is 19, Invoiced
+
+        query = f"""SELECT TicketStatusId, InvoiceId
+                FROM dbo.ticket
+                WHERE Id = {id}"""
+
+        sql = DB.query_runner_as_dict(db, query)
+
+        assert sql['results'][0]['TicketStatusId'] == 19
+        invoice_id = sql['results'][0]['InvoiceId']
+
 
     @pytest.mark.ticket_06
     def test_ticket_06(self,base_url,default_headers,db):
@@ -1396,6 +1522,27 @@ class TestEncinoGas:
                                                               ticket_time=ticket_time)
         ticket_total = round(ticket_total, 3)
         assert round(calculated_total, 3) == ticket_total
+
+        file = self.invoice_file
+        file['SelectedTickets'] = [id]
+
+        # Invoice as hauler
+        imp_hauler = Auth.impoersonate(base_url, default_headers, file=self.hauler)
+        time.sleep(1)
+        invoiced = Invoice.invoice_tickets(base_url, file_name=file, cookie=imp_hauler)
+
+        assert invoiced == 200
+
+        # Verify Ticket Status is 19, Invoiced
+
+        query = f"""SELECT TicketStatusId, InvoiceId
+                FROM dbo.ticket
+                WHERE Id = {id}"""
+
+        sql = DB.query_runner_as_dict(db, query)
+
+        assert sql['results'][0]['TicketStatusId'] == 19
+        invoice_id = sql['results'][0]['InvoiceId']
 
 
     @pytest.mark.ticket_47
@@ -1575,6 +1722,27 @@ class TestEncinoGas:
         ticket_total = round(ticket_total, 3)
         assert round(calculated_total, 3) == ticket_total
 
+        file = self.invoice_file
+        file['SelectedTickets'] = [id]
+
+        # Invoice as hauler
+        imp_hauler = Auth.impoersonate(base_url, default_headers, file=self.hauler)
+        time.sleep(1)
+        invoiced = Invoice.invoice_tickets(base_url, file_name=file, cookie=imp_hauler)
+
+        assert invoiced == 200
+
+        # Verify Ticket Status is 19, Invoiced
+
+        query = f"""SELECT TicketStatusId, InvoiceId
+                FROM dbo.ticket
+                WHERE Id = {id}"""
+
+        sql = DB.query_runner_as_dict(db, query)
+
+        assert sql['results'][0]['TicketStatusId'] == 19
+        invoice_id = sql['results'][0]['InvoiceId']
+
     @pytest.mark.ticket_46
     def test_ticket_45(self,base_url,default_headers,db):
         # Well Head ELLIE 19-14-6 001H
@@ -1749,11 +1917,27 @@ class TestEncinoGas:
         ticket_total = round(ticket_total, 3)
         assert round(calculated_total, 3) == ticket_total
 
-    # Just one more!
+        file = self.invoice_file
+        file['SelectedTickets'] = [id]
 
+        # Invoice as hauler
+        imp_hauler = Auth.impoersonate(base_url, default_headers, file=self.hauler)
+        time.sleep(1)
+        invoiced = Invoice.invoice_tickets(base_url, file_name=file, cookie=imp_hauler)
 
+        assert invoiced == 200
 
-   # Pick a different ticket the NPT for this one keeps failing for some reason
+        # Verify Ticket Status is 19, Invoiced
+
+        query = f"""SELECT TicketStatusId, InvoiceId
+                FROM dbo.ticket
+                WHERE Id = {id}"""
+
+        sql = DB.query_runner_as_dict(db, query)
+
+        assert sql['results'][0]['TicketStatusId'] == 19
+        invoice_id = sql['results'][0]['InvoiceId']
+
     @pytest.mark.ticket_87
     def test_ticket_87(self,base_url,default_headers,db):
         x = 1
