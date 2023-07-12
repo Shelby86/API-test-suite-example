@@ -139,6 +139,10 @@ class DBHelper:
 
         return sql
 
+    def get_allocation_costs(db,ticket_id):
+        query = f"""select * from TicketCostAllocation where TicketID = {ticket_id};"""
+        # Ypu can't use the star as Microsoft can't handle dates, just copy and paste the column names from Azure
+
 
 
 

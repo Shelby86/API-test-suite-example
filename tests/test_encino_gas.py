@@ -1743,7 +1743,7 @@ class TestEncinoGas:
         assert sql['results'][0]['TicketStatusId'] == 19
         invoice_id = sql['results'][0]['InvoiceId']
 
-    @pytest.mark.ticket_46
+    @pytest.mark.ticket_45
     def test_ticket_45(self,base_url,default_headers,db):
         # Well Head ELLIE 19-14-6 001H
         # Account Code 1001 800
@@ -2023,6 +2023,17 @@ class TestEncinoGas:
         assert sql['results'][0]['TicketStatusId'] == 19
         invoice_id = sql['results'][0]['InvoiceId']
 
+
+
+
+
+
+
+
+# Update the operator id in the Invoice API call
+# Use Hess and High Plains
+
+#
 
 
 
