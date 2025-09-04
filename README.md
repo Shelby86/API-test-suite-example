@@ -1,7 +1,7 @@
 # Overview
 
 
-Hello and welcome to the Gemini API automation
+Hello and welcome to the the automation suite
 
 Set Up:
 
